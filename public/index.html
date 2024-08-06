@@ -1,0 +1,37 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Chat App</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+  </head>
+  <body>
+    <div id="chat">
+      <ul id="messages"></ul>
+      <input id="userName" type="text" placeholder="Your name" />
+      <input id="message" type="text" placeholder="Type a message" />
+      <button onclick="sendMessage()">Send</button>
+    </div>
+
+    <script>
+      const socket = io('http://localhost:3000');
+
+      socket.on('newMessage', (message) => {
+        const li = document.createElement('li');
+        li.textContent = message;
+        document.getElementById('messages').appendChild(li);
+      });
+
+      function sendMessage() {
+        const messageInput = document.getElementById('message');
+        const userNameInput = document.getElementById('userName');
+
+        if (userNameInput.value) {
+          socket.emit('setUserName', userNameInput.value);
+        }
+
+        socket.emit('sendMessage', messageInput.value);
+        messageInput.value = '';
+      }
+    </script>
+  </body>
+</html>

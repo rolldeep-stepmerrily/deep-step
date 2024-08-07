@@ -1,14 +1,15 @@
 import { Injectable } from '@nestjs/common';
+import { IMessage } from './chat.interface';
 
 @Injectable()
 export class ChatService {
-  private messages: string[] = [];
+  private messages: IMessage[] = [];
 
-  addMessage(message: string) {
+  addMessage(message: IMessage) {
     this.messages.push(message);
   }
 
-  getMessages() {
+  getMessages(): IMessage[] {
     return this.messages;
   }
 }

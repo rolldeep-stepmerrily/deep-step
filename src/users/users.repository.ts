@@ -1,4 +1,5 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
+import { WsException } from '@nestjs/websockets';
 
 import { PrismaService } from 'src/prisma/prisma.service';
 
@@ -13,9 +14,18 @@ export class UsersRepository {
         select: { id: true, deletedAt: true },
       });
     } catch (e) {
-      console.error(e);
+      throw new WsException('database connection error');
+    }
+  }
 
-      throw new InternalServerErrorException();
+  async findUserByUsername(username: string) {
+    try {
+      return await this.prismaService.user.findUnique({
+        where: { username },
+        select: { id: true, username: true, password: true, deletedAt: true },
+      });
+    } catch (e) {
+      throw new WsException('database connection error');
     }
   }
 }

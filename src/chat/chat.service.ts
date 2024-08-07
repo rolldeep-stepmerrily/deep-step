@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 
 import { ChatRepository } from './chat.repository';
 import { IMessage } from './chat.interface';
@@ -23,5 +23,25 @@ export class ChatService {
     const chatRoom = await this.chatRepository.createChatRoom(userId, name, description);
 
     return { chatRoom };
+  }
+
+  async joinChatRoom(userId: number, chatRoomId: number) {
+    const chatRoom = await this.chatRepository.findChatRoomById(chatRoomId);
+
+    if (!chatRoom) {
+      throw new NotFoundException();
+    }
+
+    return await this.chatRepository.joinChatRoom(userId, chatRoomId);
+  }
+
+  async leaveChatRoom(userId: number, chatRoomId: number) {
+    const chatRoom = await this.chatRepository.findChatRoomById(chatRoomId);
+
+    if (!chatRoom) {
+      throw new NotFoundException();
+    }
+
+    return await this.chatRepository.leaveChatRoom(userId, chatRoomId);
   }
 }

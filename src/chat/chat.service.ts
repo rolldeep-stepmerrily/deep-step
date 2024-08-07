@@ -44,4 +44,8 @@ export class ChatService {
 
     return await this.chatRepository.leaveChatRoom(userId, chatRoomId);
   }
+
+  async createMessage(message: IMessage) {
+    return await this.chatRepository.createMessage(message);
+  }
 }

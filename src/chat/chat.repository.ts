@@ -1,6 +1,8 @@
 import { ConflictException, Injectable, InternalServerErrorException } from '@nestjs/common';
+import dayjs from 'dayjs';
 
 import { PrismaService } from 'src/prisma/prisma.service';
+import { IMessage } from './chat.interface';
 
 @Injectable()
 export class ChatRepository {
@@ -42,9 +44,9 @@ export class ChatRepository {
 
   async leaveChatRoom(userId: number, chatRoomId: number) {
     try {
-      return await this.prismaService.chatRoomUser.delete({
+      return await this.prismaService.chatRoomUser.update({
         where: { userId_chatRoomId: { userId, chatRoomId } },
-        select: { id: true },
+        data: { deletedAt: dayjs().toISOString() },
       });
     } catch (e) {
       console.error(e);
@@ -52,6 +54,20 @@ export class ChatRepository {
       if (e.code === 'P2025') {
         throw new ConflictException('not joined this chat room');
       }
+
+      throw new InternalServerErrorException();
+    }
+  }
+
+  async createMessage({ id, chatRoomId, sender, content, createdAt }: IMessage) {
+    try {
+      const { id: userId } = sender;
+      return await this.prismaService.message.create({
+        data: { id, chatRoomId, userId, content, createdAt: dayjs(createdAt).toISOString() },
+        select: { id: true },
+      });
+    } catch (e) {
+      console.error(e);
 
       throw new InternalServerErrorException();
     }

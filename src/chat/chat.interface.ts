@@ -14,6 +14,7 @@ interface ISender {
 
 export interface IMessage {
   id: string;
+  chatRoomId: number;
   content: string;
   sender: ISender;
   createdAt: Dayjs;

@@ -15,6 +15,7 @@ import dayjs from 'dayjs';
 
 import { ChatService } from './chat.service';
 import { IJwtPayload, IMessage } from './chat.interface';
+import { CreateMessageDto } from './chat.dto';
 
 @WebSocketGateway({ cors: { origin: '*' } })
 export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
@@ -49,8 +50,8 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   }
 
   @SubscribeMessage('sendMessage')
-  async handleMessage(@MessageBody() content: string, @ConnectedSocket() client: Socket) {
-    if (typeof content !== 'string' || !content.trim().length) {
+  async handleMessage(@MessageBody() data: CreateMessageDto, @ConnectedSocket() client: Socket) {
+    if (typeof data.content !== 'string' || !data.content.trim().length) {
       throw new WsException('invalid message');
     }
 
@@ -62,15 +63,14 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
     const message: IMessage = {
       id: uuidv4(),
-      content,
+      chatRoomId: data.chatRoomId,
       sender: { id: user.sub, username: user.username, nickname: user.nickname },
+      content: data.content,
       createdAt: dayjs(),
     };
 
-    this.chatService.addMessage(message);
-    this.server.emit('receiveMessage', message);
-    const messages = this.chatService.getMessages();
+    const createMessage = await this.chatService.createMessage(message);
 
-    console.log(messages);
+    this.server.to(String(data.chatRoomId)).emit('receiveMessage', createMessage);
   }
 }

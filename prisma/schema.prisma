@@ -82,7 +82,7 @@ model ChatRoomUser {
 }
 
 model Message {
-  id         Int       @id @default(autoincrement())
+  id         String    @id @default(uuid())
   chatRoomId Int
   userId     Int
   content    String

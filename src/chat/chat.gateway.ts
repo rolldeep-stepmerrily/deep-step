@@ -1,6 +1,8 @@
 import {
   ConnectedSocket,
   MessageBody,
+  OnGatewayConnection,
+  OnGatewayDisconnect,
   SubscribeMessage,
   WebSocketGateway,
   WebSocketServer,
@@ -9,13 +11,13 @@ import {
 import { Server, Socket } from 'socket.io';
 import { JwtService } from '@nestjs/jwt';
 import { v4 as uuidv4 } from 'uuid';
+import dayjs from 'dayjs';
 
 import { ChatService } from './chat.service';
 import { IJwtPayload, IMessage } from './chat.interface';
-import dayjs from 'dayjs';
 
 @WebSocketGateway({ cors: { origin: '*' } })
-export class ChatGateway {
+export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer()
   server: Server;
 
@@ -26,32 +28,42 @@ export class ChatGateway {
 
   async handleConnection(client: Socket) {
     try {
-      const token = client.handshake.query.token as string;
-      const payload = this.jwtService.verify(token) as IJwtPayload;
+      const token = client.handshake.auth.token || client.handshake.headers['authorization']?.split(' ')[1];
+
+      if (!token) {
+        throw new WsException('unauthorized');
+      }
+
+      const payload = await this.jwtService.verifyAsync<IJwtPayload>(token);
+
       client.data.user = payload;
     } catch (e) {
-      console.error('invalid token');
+      client.emit('error', 'authentication failed');
 
       client.disconnect();
     }
   }
 
+  async handleDisconnect(client: Socket) {
+    console.log(client.id);
+  }
+
   @SubscribeMessage('sendMessage')
   async handleMessage(@MessageBody() content: string, @ConnectedSocket() client: Socket) {
+    if (typeof content !== 'string' || !content.trim().length) {
+      throw new WsException('invalid message');
+    }
+
     const user = client.data.user as IJwtPayload;
 
     if (!user) {
-      throw new WsException('Unauthorized');
+      throw new WsException('unauthorized');
     }
 
     const message: IMessage = {
       id: uuidv4(),
       content,
-      sender: {
-        id: user.sub,
-        username: user.username,
-        nickname: user.nickname,
-      },
+      sender: { id: user.sub, username: user.username, nickname: user.nickname },
       createdAt: dayjs(),
     };
 

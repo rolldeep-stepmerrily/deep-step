@@ -24,8 +24,10 @@ model User {
   updatedAt   DateTime? @updatedAt
   deletedAt   DateTime?
 
-  term    Term?
-  profile Profile?
+  term          Term?
+  profile       Profile?
+  chatRoomUsers ChatRoomUser[]
+  messages      Message[]
 }
 
 model Term {
@@ -51,4 +53,43 @@ model Profile {
   deletedAt DateTime?
 
   user User @relation(fields: [id], references: [id])
+}
+
+model ChatRoom {
+  id          Int       @id @default(autoincrement())
+  name        String
+  description String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime? @updatedAt
+  deletedAt   DateTime?
+
+  messages      Message[]
+  chatRoomUsers ChatRoomUser[]
+}
+
+model ChatRoomUser {
+  id         Int       @id @default(autoincrement())
+  chatRoomId Int
+  userId     Int
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime? @updatedAt
+  deletedAt  DateTime?
+
+  user     User     @relation(fields: [userId], references: [id])
+  chatRoom ChatRoom @relation(fields: [chatRoomId], references: [id])
+
+  @@unique([userId, chatRoomId])
+}
+
+model Message {
+  id         Int       @id @default(autoincrement())
+  chatRoomId Int
+  userId     Int
+  content    String
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime? @updatedAt
+  deletedAt  DateTime?
+
+  user     User     @relation(fields: [userId], references: [id])
+  chatRoom ChatRoom @relation(fields: [chatRoomId], references: [id])
 }

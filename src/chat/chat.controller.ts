@@ -1,4 +1,4 @@
-import { Body, Controller, Param, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 
 import { ChatService } from './chat.service';
@@ -24,5 +24,20 @@ export class ChatController {
   @Post('leave/:id')
   async leaveChatRoom(@User('id') userId: number, @Param('id', ParsePositiveIntPipe) chatRoomId: number) {
     return await this.chatService.leaveChatRoom(userId, chatRoomId);
+  }
+
+  @Get('rooms/all')
+  async findAllChatRooms() {
+    return await this.chatService.findAllChatRooms();
+  }
+
+  @Get('rooms')
+  async findUserChatRooms(@User('id') userId: number) {
+    return await this.chatService.findUserChatRooms(userId);
+  }
+
+  @Get('rooms/:id')
+  async findUserChatRoom(@User('id') userId: number, @Param('id', ParsePositiveIntPipe) chatRoomId: number) {
+    return await this.chatService.findUserChatRoom(userId, chatRoomId);
   }
 }

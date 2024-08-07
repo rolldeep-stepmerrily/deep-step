@@ -9,12 +9,26 @@ export class ChatService {
   constructor(private readonly chatRepository: ChatRepository) {}
   private messages: IMessage[] = [];
 
-  async addMessage(message: IMessage) {
-    this.messages.push(message);
+  async findAllChatRooms() {
+    const chatRooms = await this.chatRepository.findAllChatRooms();
+
+    return { chatRooms };
   }
 
-  async getMessages() {
-    return this.messages;
+  async findUserChatRooms(userId: number) {
+    const chatRooms = await this.chatRepository.findUserChatRooms(userId);
+
+    return { chatRooms };
+  }
+
+  async findUserChatRoom(userId: number, chatRoomId: number) {
+    const chatRoom = await this.chatRepository.findUserChatRoom(userId, chatRoomId);
+
+    if (!chatRoom) {
+      throw new NotFoundException();
+    }
+
+    return { chatRoom };
   }
 
   async createChatRoom(userId: number, createChatRoomDto: CreateChatRoomDto) {

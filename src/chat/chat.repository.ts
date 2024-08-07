@@ -72,4 +72,70 @@ export class ChatRepository {
       throw new InternalServerErrorException();
     }
   }
+
+  async findAllChatRooms() {
+    try {
+      return await this.prismaService.chatRoom.findMany({
+        where: { deletedAt: null },
+        select: { id: true, name: true, description: true, chatRoomUsers: { select: { userId: true } } },
+      });
+    } catch (e) {
+      console.error(e);
+
+      throw new InternalServerErrorException();
+    }
+  }
+
+  async findUserChatRooms(userId: number) {
+    try {
+      return await this.prismaService.chatRoom.findMany({
+        where: { chatRoomUsers: { some: { userId, deletedAt: null } }, deletedAt: null },
+        select: {
+          id: true,
+          name: true,
+          description: true,
+          createdAt: true,
+          _count: { select: { chatRoomUsers: { where: { deletedAt: null } } } },
+        },
+        orderBy: { updatedAt: 'desc' },
+      });
+    } catch (e) {
+      console.error(e);
+
+      throw new InternalServerErrorException();
+    }
+  }
+
+  async findUserChatRoom(userId: number, chatRoomId: number) {
+    try {
+      return await this.prismaService.chatRoom.findUnique({
+        where: { id: chatRoomId, chatRoomUsers: { some: { userId, deletedAt: null } }, deletedAt: null },
+        select: {
+          id: true,
+          name: true,
+          description: true,
+          createdAt: true,
+          chatRoomUsers: {
+            where: { deletedAt: null },
+            select: { user: { select: { id: true, profile: { select: { avatar: true, nickname: true } } } } },
+          },
+          messages: {
+            where: { deletedAt: null },
+            orderBy: { createdAt: 'asc' },
+            select: {
+              id: true,
+              user: { select: { profile: { select: { avatar: true, nickname: true } } } },
+              content: true,
+              createdAt: true,
+            },
+          },
+          _count: { select: { chatRoomUsers: { where: { deletedAt: null } } } },
+        },
+      });
+    } catch (e) {
+      console.error(e);
+
+      throw new InternalServerErrorException();
+    }
+  }
 }

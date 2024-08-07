@@ -4,7 +4,7 @@ import { IsPositive, IsString } from 'class-validator';
 import { Common } from 'src/common/entities';
 
 export class Message extends Common implements MessageModel {
-  id: number;
+  id: string;
 
   @IsPositive()
   chatRoomId: number;

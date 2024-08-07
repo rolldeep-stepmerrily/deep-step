@@ -49,6 +49,44 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     console.log(client.id);
   }
 
+  @SubscribeMessage('joinRoom')
+  async handleJoinRoom(@MessageBody() chatRoomId: number, @ConnectedSocket() client: Socket) {
+    const user = client.data.user as IJwtPayload;
+
+    if (!user) {
+      throw new WsException('unauthorized');
+    }
+
+    const room = await this.chatService.joinChatRoom(user.sub, chatRoomId);
+
+    await client.join(String(chatRoomId));
+
+    this.server
+      .to(String(chatRoomId))
+      .emit('joinRoom', { userId: user.sub, username: user.username, nickname: user.nickname });
+
+    return room;
+  }
+
+  @SubscribeMessage('leaveRoom')
+  async handleLeaveRoom(@MessageBody() chatRoomId: number, @ConnectedSocket() client: Socket) {
+    const user = client.data.user as IJwtPayload;
+
+    if (!user) {
+      throw new WsException('unauthorized');
+    }
+
+    const room = await this.chatService.leaveChatRoom(user.sub, chatRoomId);
+
+    await client.leave(String(chatRoomId));
+
+    this.server
+      .to(String(chatRoomId))
+      .emit('leaveRoom', { userId: user.sub, username: user.username, nickname: user.nickname });
+
+    return room;
+  }
+
   @SubscribeMessage('sendMessage')
   async handleMessage(@MessageBody() data: CreateMessageDto, @ConnectedSocket() client: Socket) {
     if (typeof data.content !== 'string' || !data.content.trim().length) {
@@ -71,6 +109,8 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
     const createMessage = await this.chatService.createMessage(message);
 
-    this.server.to(String(data.chatRoomId)).emit('receiveMessage', createMessage);
+    this.server.to(String(data.chatRoomId)).emit('newMessage', createMessage);
+
+    return createMessage;
   }
 }

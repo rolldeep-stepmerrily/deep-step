@@ -6,6 +6,9 @@ import { engine } from 'express-handlebars';
 
 import { AppModule } from './app.module';
 import { TransformInterceptor } from './common/interceptors';
+import helmet from 'helmet';
+
+const { NODE_ENV, PORT, AWS_CLOUDFRONT_DOMAIN } = process.env;
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -39,6 +42,20 @@ async function bootstrap() {
   );
   app.setViewEngine('hbs');
 
-  await app.listen(process.env.PORT);
+  if (NODE_ENV === 'production') {
+    app.use(
+      helmet({
+        contentSecurityPolicy: {
+          directives: {
+            defaultSrc: ["'self'"],
+            scriptSrc: ["'self'", "'unsafe-inline'", 'unpkg.com'],
+            imgSrc: ["'self'", 'data:', `${AWS_CLOUDFRONT_DOMAIN}`],
+          },
+        },
+      }),
+    );
+  }
+
+  await app.listen(PORT);
 }
 bootstrap();

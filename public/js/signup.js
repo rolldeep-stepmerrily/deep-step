@@ -80,13 +80,17 @@ const signup = async () => {
   };
 
   try {
-    const response = await axios.post('/api/users/signup', signupPayload);
+    await axios.post('/api/users/signup', signupPayload);
 
-    console.log(response);
+    alert('회원가입이 완료되었습니다.');
+
+    window.location.href = '/';
   } catch (e) {
     console.error(e);
 
-    alert('회원가입에 실패했습니다.');
+    const message = e.response.data.message;
+
+    alert(message);
   }
 };
 

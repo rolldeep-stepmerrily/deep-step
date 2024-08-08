@@ -1,0 +1,20 @@
+<html>
+  <head>
+    <title>{{title}}</title>
+    <link rel='stylesheet' href='/css/reset.css' />
+    <link rel='stylesheet' href='/css/common.css' />
+    {{#each styles as |style|}}
+      <link rel='stylesheet' href='/css/{{style}}.css' />
+    {{/each}}
+  </head>
+  <body>
+    <div class='container'>
+      {{{body}}}
+    </div>
+
+    <script src='/js/common.js'></script>
+    {{#each scripts as |script|}}
+      <script src='/js/{{script}}.js'></script>
+    {{/each}}
+  </body>
+</html>

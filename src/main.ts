@@ -1,12 +1,11 @@
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { ValidationPipe } from '@nestjs/common';
-import { NextFunction, Request, Response } from 'express';
 import { join } from 'path';
+import { engine } from 'express-handlebars';
 
 import { AppModule } from './app.module';
 import { TransformInterceptor } from './common/interceptors';
-import { HttpExceptionFilter } from './common/filters';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -22,19 +21,23 @@ async function bootstrap() {
     }),
   );
 
-  app.useGlobalFilters(new HttpExceptionFilter());
-
-  app.setGlobalPrefix('api');
+  app.setGlobalPrefix('api', {
+    exclude: ['/', '/signup'],
+  });
 
   app.useStaticAssets(join(__dirname, '..', 'public'));
+  app.setBaseViewsDir(join(__dirname, '..', 'views'));
 
-  app.use('*', (req: Request, res: Response, next: NextFunction) => {
-    if (req.originalUrl.startsWith('/api')) {
-      next();
-    } else {
-      res.sendFile(join(__dirname, '..', 'public', `${req.originalUrl}.html`));
-    }
-  });
+  app.engine(
+    'hbs',
+    engine({
+      extname: 'hbs',
+      defaultLayout: 'main',
+      layoutsDir: join(__dirname, '..', 'views/layouts'),
+      partialsDir: join(__dirname, '..', 'views/partials'),
+    }),
+  );
+  app.setViewEngine('hbs');
 
   await app.listen(process.env.PORT);
 }

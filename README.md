@@ -1,5 +1,19 @@
-## TODO
+<p align="center">
+ <picture >
+  <source media="(prefers-color-scheme: dark)" srcset="https://da9ck3uz4lf5y.cloudfront.net/assets/logos/deep-step-dark-logo.png">
+  <source media="(prefers-color-scheme: light)" srcset="https://da9ck3uz4lf5y.cloudfront.net/assets/logos/deep-step-light-logo.png">
+  <img alt="deep-step-logo" src="https://da9ck3uz4lf5y.cloudfront.net/assets/logos/deep-step-light-logo.png" width="400">
+ </picture>
+</p>
 
+_<p align="right">designed by DALL·E</p>_
+
+## Description
+ 
+ 
+
+## Progress
+  
 1. 데이터베이스 생성 ✅
 2. prisma 연결 및 schema 구상 ✅
 3. 로그인 및 인증 🔲
@@ -10,14 +24,7 @@
 8. 읽음 표시 🔲
 9. EC2 배포 🔲
 10. CI/CD 🔲
-
-## memo 
-그냥 정직한 html,css,javascript로 할까..? handlebars라도 할까 🤔
-프론트엔드 귀찮지만..
-일단 걍 해보고 나중에 최적화 ㄱㄱ;;
-회원가입부터
-
-
+ 
 <p align="center"> 
   <a href="https://deep-step.com" target="_blank" >Home</a> 
-</p>
+</p> 

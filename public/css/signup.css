@@ -17,3 +17,14 @@ input[type='checkbox'] {
   display: flex;
   flex-direction: column;
 }
+
+.terms-group {
+  display: flex;
+}
+
+.description {
+  text-align: center;
+  margin-top: 30px;
+  color: #d50000;
+  font-size: 12px;
+}

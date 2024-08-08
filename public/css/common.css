@@ -99,3 +99,7 @@ button {
   color: #757575;
   font-weight: normal;
 }
+
+input::placeholder {
+  font-size: 12px;
+}

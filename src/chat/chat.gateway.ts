@@ -10,7 +10,7 @@ import {
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 import { JwtService } from '@nestjs/jwt';
-import { v4 as uuidv4 } from 'uuid';
+import { v7 as uuidv7 } from 'uuid';
 import dayjs from 'dayjs';
 
 import { ChatService } from './chat.service';
@@ -100,7 +100,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     }
 
     const message: IMessage = {
-      id: uuidv4(),
+      id: uuidv7(),
       chatRoomId: data.chatRoomId,
       sender: { id: user.sub, username: user.username, nickname: user.nickname },
       content: data.content,

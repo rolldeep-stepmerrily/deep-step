@@ -1,8 +1,6 @@
 import { Controller, Get, Render } from '@nestjs/common';
 
-const { AWS_CLOUDFRONT_DOMAIN } = process.env;
-
-const appLogo = `${AWS_CLOUDFRONT_DOMAIN}/assets/logos/deep-step-light-logo.png`;
+const appLogo = `${process.env.AWS_CLOUDFRONT_DOMAIN}/assets/logos/deep-step-light-logo.png`;
 const appName = 'deep-step';
 
 @Controller()

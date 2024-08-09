@@ -11,5 +11,6 @@ import { ChatController } from './chat.controller';
   imports: [AuthModule, PrismaModule],
   providers: [ChatService, ChatGateway, ChatRepository],
   controllers: [ChatController],
+  exports: [ChatService],
 })
 export class ChatModule {}

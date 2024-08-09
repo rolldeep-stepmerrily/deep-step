@@ -6,8 +6,6 @@ const findChatRooms = async () => {
 
     const { chatRooms } = response.data;
 
-    console.log(chatRooms);
-
     const chatRoomList = document.querySelector('#chat-room-list');
 
     chatRoomList.innerHTML = '';
@@ -31,7 +29,7 @@ const findChatRooms = async () => {
 const createChatRoomElement = (id, name, description, userCount, ownerNickname) => {
   const chatRoomElement = document.createElement('div');
   chatRoomElement.classList.add('chat-room-item');
-  chatRoomElement.addEventListener('click', () => joinChatRoom(id));
+  chatRoomElement.addEventListener('click', () => (window.location.href = `/chat-room/${id}`));
 
   chatRoomElement.innerHTML = `
     <div class="chat-room-name">${name} <span class="chat-room-owner">(${ownerNickname})</span></div> 
@@ -40,16 +38,6 @@ const createChatRoomElement = (id, name, description, userCount, ownerNickname) 
   `;
 
   return chatRoomElement;
-};
-
-const joinChatRoom = async (chatRoomId) => {
-  try {
-    await axios.post(`/api/chat/join/${chatRoomId}`, {}, { headers });
-
-    window.location.href = `/chat-room/${chatRoomId}`;
-  } catch (e) {
-    alert('일시적인 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
-  }
 };
 
 const signout = () => {

@@ -24,7 +24,7 @@ async function bootstrap() {
     }),
   );
 
-  const pages = ['/', '/signup', '/chat-room-list', '/chat-room-create'];
+  const pages = ['/', '/signup', '/chat-room-list', '/chat-room-create', '/chat-room/:id'];
 
   app.setGlobalPrefix('api', { exclude: pages });
 
@@ -48,7 +48,7 @@ async function bootstrap() {
         contentSecurityPolicy: {
           directives: {
             defaultSrc: ["'self'"],
-            scriptSrc: ["'self'", "'unsafe-inline'", 'unpkg.com'],
+            scriptSrc: ["'self'", "'unsafe-inline'", 'unpkg.com', 'cdn.socket.io'],
             styleSrc: ["'self'", "'unsafe-inline'", 'cdnjs.cloudflare.com'],
             fontSrc: ["'self'", 'cdnjs.cloudflare.com'],
             imgSrc: ["'self'", 'data:', `${AWS_CLOUDFRONT_DOMAIN}`, 'cdnjs.cloudflare.com'],

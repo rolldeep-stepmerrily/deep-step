@@ -1,10 +1,14 @@
-import { Controller, Get, Render } from '@nestjs/common';
+import { Controller, Get, NotFoundException, Param, Render } from '@nestjs/common';
+
+import { ChatService } from './chat/chat.service';
+import { ParsePositiveIntPipe } from './common/pipes';
 
 const appLogo = `${process.env.AWS_CLOUDFRONT_DOMAIN}/assets/logos/deep-step-light-logo.png`;
 const appName = 'deep-step';
 
 @Controller()
 export class AppController {
+  constructor(private readonly chatService: ChatService) {}
   @Get()
   @Render('index')
   index() {
@@ -27,5 +31,19 @@ export class AppController {
   @Render('chat-room-create')
   chatRoomCreate() {
     return { appName, styles: ['chat-room-create'], scripts: ['chat-room-create'] };
+  }
+
+  @Get('chat-room/:id')
+  @Render('chat-room')
+  async chatRoom(@Param('id', ParsePositiveIntPipe) chatRoomId: number) {
+    const chatRoom = await this.chatService.findChatRoomById(chatRoomId);
+
+    if (!chatRoom) {
+      throw new NotFoundException();
+    }
+
+    const { name: chatRoomName } = chatRoom;
+
+    return { appName, styles: ['chat-room'], scripts: ['chat-room'], chatRoomName };
   }
 }

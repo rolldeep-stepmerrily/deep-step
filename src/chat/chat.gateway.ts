@@ -101,7 +101,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
     const message: IMessage = {
       id: uuidv7(),
-      chatRoomId: data.chatRoomId,
+      chatRoomId: Number(data.chatRoomId),
       sender: { id: user.sub, username: user.username, nickname: user.nickname },
       content: data.content,
       createdAt: dayjs(),

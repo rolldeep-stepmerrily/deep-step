@@ -31,6 +31,10 @@ export class ChatService {
     return { chatRoom };
   }
 
+  async findChatRoomById(chatRoomId: number) {
+    return await this.chatRepository.findChatRoomById(chatRoomId);
+  }
+
   async createChatRoom(userId: number, createChatRoomDto: CreateChatRoomDto) {
     const { name, description } = createChatRoomDto;
 
@@ -65,5 +69,15 @@ export class ChatService {
 
   async createMessage(message: IMessage) {
     return await this.chatRepository.createMessage(message);
+  }
+
+  async findMessages(userId: number, chatRoomId: number) {
+    const findChatRoomUser = await this.chatRepository.findChatRoomUser(userId, chatRoomId);
+
+    if (!findChatRoomUser) {
+      throw new NotFoundException();
+    }
+
+    return await this.chatRepository.findMessages(userId, chatRoomId);
   }
 }

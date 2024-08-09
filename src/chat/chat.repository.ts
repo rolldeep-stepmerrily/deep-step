@@ -25,7 +25,7 @@ export class ChatRepository {
     try {
       return await this.prismaService.chatRoom.findUnique({
         where: { id: chatRoomId, deletedAt: null },
-        select: { id: true },
+        select: { id: true, name: true },
       });
     } catch (e) {
       console.error(e);
@@ -81,9 +81,15 @@ export class ChatRepository {
   async createMessage({ id, chatRoomId, sender, content, createdAt }: IMessage) {
     try {
       const { id: userId } = sender;
+
       return await this.prismaService.message.create({
         data: { id, chatRoomId, userId, content, createdAt: dayjs(createdAt).toISOString() },
-        select: { id: true },
+        select: {
+          id: true,
+          content: true,
+          createdAt: true,
+          user: { select: { profile: { select: { nickname: true } } } },
+        },
       });
     } catch (e) {
       console.error(e);
@@ -145,19 +151,39 @@ export class ChatRepository {
             where: { deletedAt: null },
             select: { user: { select: { id: true, profile: { select: { avatar: true, nickname: true } } } } },
           },
-          messages: {
-            where: { deletedAt: null },
-            orderBy: { createdAt: 'asc' },
-            select: {
-              id: true,
-              user: { select: { profile: { select: { avatar: true, nickname: true } } } },
-              content: true,
-              createdAt: true,
-            },
-          },
           _count: { select: { chatRoomUsers: { where: { deletedAt: null } } } },
           owner: { select: { profile: { select: { nickname: true } } } },
         },
+      });
+    } catch (e) {
+      console.error(e);
+
+      throw new InternalServerErrorException();
+    }
+  }
+
+  async findMessages(userId: number, chatRoomId: number) {
+    try {
+      return await this.prismaService.$transaction(async (prisma) => {
+        const joinedAt = await prisma.chatRoomUser.findFirst({
+          where: { chatRoomId, userId, deletedAt: null },
+          select: { createdAt: true },
+        });
+
+        if (!joinedAt) {
+          throw new ConflictException('not joined this chat room');
+        }
+
+        return await prisma.message.findMany({
+          where: { chatRoomId, createdAt: { gte: joinedAt.createdAt }, deletedAt: null },
+          select: {
+            id: true,
+            content: true,
+            createdAt: true,
+            user: { select: { profile: { select: { nickname: true } } } },
+          },
+          orderBy: { createdAt: 'asc' },
+        });
       });
     } catch (e) {
       console.error(e);

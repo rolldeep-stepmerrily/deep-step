@@ -40,4 +40,9 @@ export class ChatController {
   async findUserChatRoom(@User('id') userId: number, @Param('id', ParsePositiveIntPipe) chatRoomId: number) {
     return await this.chatService.findUserChatRoom(userId, chatRoomId);
   }
+
+  @Get('rooms/:id/messages')
+  async findMessages(@User('id') userId: number, @Param('id', ParsePositiveIntPipe) chatRoomId: number) {
+    return await this.chatService.findMessages(userId, chatRoomId);
+  }
 }

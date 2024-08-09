@@ -26,11 +26,14 @@ body {
   display: flex;
   flex-direction: column;
   position: relative;
-  justify-content: space-between;
 }
 
-h1,
-h2 {
+main {
+  height: 100%;
+  position: relative;
+}
+
+h1 {
   color: #333;
   text-align: center;
   margin-bottom: 30px;
@@ -38,6 +41,7 @@ h2 {
 
 .button,
 button {
+  font-family: 'Noto Sans KR', sans-serif;
   display: inline-block;
   padding: 10px 20px;
   background-color: #ffd600;
@@ -89,7 +93,7 @@ input::placeholder {
   font-size: 12px;
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 768px) {
   body {
     background-color: #fff;
     align-items: flex-start;
@@ -105,4 +109,9 @@ input::placeholder {
     min-height: 100vh;
     box-sizing: border-box;
   }
+}
+.header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
 }

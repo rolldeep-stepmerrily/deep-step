@@ -22,10 +22,29 @@ export class ChatRepository {
   }
 
   async findChatRoomById(chatRoomId: number) {
-    return await this.prismaService.chatRoom.findUnique({
-      where: { id: chatRoomId, deletedAt: null },
-      select: { id: true },
-    });
+    try {
+      return await this.prismaService.chatRoom.findUnique({
+        where: { id: chatRoomId, deletedAt: null },
+        select: { id: true },
+      });
+    } catch (e) {
+      console.error(e);
+
+      throw new InternalServerErrorException();
+    }
+  }
+
+  async findChatRoomUser(userId: number, chatRoomId: number) {
+    try {
+      return await this.prismaService.chatRoomUser.findUnique({
+        where: { userId_chatRoomId: { userId, chatRoomId } },
+        select: { id: true },
+      });
+    } catch (e) {
+      console.error(e);
+
+      throw new InternalServerErrorException();
+    }
   }
 
   async joinChatRoom(userId: number, chatRoomId: number) {

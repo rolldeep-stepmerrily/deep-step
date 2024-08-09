@@ -98,7 +98,7 @@ const signup = async () => {
   }
 };
 
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', () => {
   document.querySelector('#proceed-button').addEventListener('click', checkTerms);
   document.querySelector('#signup-button').addEventListener('click', signup);
 });

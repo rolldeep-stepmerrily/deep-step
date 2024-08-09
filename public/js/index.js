@@ -40,7 +40,7 @@ const handleEnter = (e) => {
   }
 };
 
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', () => {
   const usernameInput = document.querySelector('#username');
   const passwordInput = document.querySelector('#password');
   const signinButton = document.querySelector('#signin-button');

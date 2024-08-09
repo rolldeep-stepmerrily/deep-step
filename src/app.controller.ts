@@ -22,4 +22,10 @@ export class AppController {
   chatRoomList() {
     return { appName, styles: ['chat-room-list'], scripts: ['chat-room-list'] };
   }
+
+  @Get('chat-room-create')
+  @Render('chat-room-create')
+  chatRoomCreate() {
+    return { appName, styles: ['chat-room-create'], scripts: ['chat-room-create'] };
+  }
 }

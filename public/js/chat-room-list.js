@@ -1,10 +1,8 @@
+const headers = { Authorization: `Bearer ${sessionStorage.getItem('accessToken')}` };
+
 const findChatRooms = async () => {
   try {
-    const response = await axios.get('/api/chat/rooms/all', {
-      headers: { Authorization: `Bearer ${sessionStorage.getItem('accessToken')}` },
-    });
-
-    console.log(response);
+    const response = await axios.get('/api/chat/rooms/all', { headers });
 
     const { chatRooms } = response.data;
 
@@ -29,9 +27,7 @@ const findChatRooms = async () => {
 const createChatRoomElement = (id, name, description, userCount) => {
   const chatRoomElement = document.createElement('div');
   chatRoomElement.classList.add('chat-room-item');
-  chatRoomElement.addEventListener('click', () => {
-    window.location.href = `/chat-room/${id}`;
-  });
+  chatRoomElement.addEventListener('click', () => joinChatRoom(id));
 
   chatRoomElement.innerHTML = `
     <div class="chat-room-name">${name}</div>
@@ -42,13 +38,23 @@ const createChatRoomElement = (id, name, description, userCount) => {
   return chatRoomElement;
 };
 
+const joinChatRoom = async (chatRoomId) => {
+  try {
+    await axios.post(`/api/chat/join/${chatRoomId}`, {}, { headers });
+
+    window.location.href = `/chat-room/${chatRoomId}`;
+  } catch (e) {
+    alert('일시적인 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+  }
+};
+
 const signout = () => {
   sessionStorage.removeItem('accessToken');
 
   window.location.href = '/';
 };
 
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', () => {
   const accessToken = sessionStorage.getItem('accessToken');
 
   if (!accessToken) {
@@ -58,6 +64,10 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   findChatRooms();
+
+  document.querySelector('#create-room-button').addEventListener('click', () => {
+    window.location.href = '/chat-room-create';
+  });
 
   document.querySelector('#signout-button').addEventListener('click', signout);
 });

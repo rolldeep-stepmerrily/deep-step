@@ -46,7 +46,11 @@ export class ChatService {
       throw new NotFoundException();
     }
 
-    return await this.chatRepository.joinChatRoom(userId, chatRoomId);
+    const findChatRoomUser = await this.chatRepository.findChatRoomUser(userId, chatRoomId);
+
+    if (!findChatRoomUser) {
+      return await this.chatRepository.joinChatRoom(userId, chatRoomId);
+    }
   }
 
   async leaveChatRoom(userId: number, chatRoomId: number) {

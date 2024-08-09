@@ -18,12 +18,12 @@ export class ChatController {
 
   @Post('join/:id')
   async joinChatRoom(@User('id') userId: number, @Param('id', ParsePositiveIntPipe) chatRoomId: number) {
-    return await this.chatService.joinChatRoom(userId, chatRoomId);
+    await this.chatService.joinChatRoom(userId, chatRoomId);
   }
 
   @Post('leave/:id')
   async leaveChatRoom(@User('id') userId: number, @Param('id', ParsePositiveIntPipe) chatRoomId: number) {
-    return await this.chatService.leaveChatRoom(userId, chatRoomId);
+    await this.chatService.leaveChatRoom(userId, chatRoomId);
   }
 
   @Get('rooms/all')

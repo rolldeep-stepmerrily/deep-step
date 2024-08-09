@@ -45,10 +45,6 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     }
   }
 
-  async handleDisconnect(client: Socket) {
-    console.log(client.id);
-  }
-
   @SubscribeMessage('joinRoom')
   async handleJoinRoom(@MessageBody() chatRoomId: number, @ConnectedSocket() client: Socket) {
     const user = client.data.user as IJwtPayload;

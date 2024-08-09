@@ -1,6 +1,5 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { WsException } from '@nestjs/websockets';
 import bcrypt from 'bcrypt';
 
 import { UsersRepository } from 'src/users/users.repository';
@@ -16,13 +15,13 @@ export class AuthService {
     const user = await this.usersRepository.findUserByUsername(username);
 
     if (!user || user.deletedAt) {
-      throw new WsException('user not found');
+      throw new NotFoundException('계정이 존재하지 않습니다.');
     }
 
     const isValidatePassword = await bcrypt.compare(password, user.password);
 
     if (!isValidatePassword) {
-      throw new WsException('password is not correct');
+      throw new BadRequestException('비밀번호를 다시 확인해주세요.');
     }
 
     const payload = {

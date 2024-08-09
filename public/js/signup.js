@@ -24,7 +24,13 @@ const signup = async () => {
   const password = document.querySelector('#password').value.trim();
   const passwordConfirm = document.querySelector('#password-confirm').value.trim();
 
-  const isValidPassword = validatePassword(password, passwordConfirm);
+  if (password !== passwordConfirm) {
+    alert('비밀번호가 서로 일치하지 않습니다.');
+
+    return false;
+  }
+
+  const isValidPassword = validatePassword(password);
 
   if (!isValidPassword) {
     return;
@@ -95,6 +101,6 @@ const signup = async () => {
 };
 
 document.addEventListener('DOMContentLoaded', function () {
-  document.getElementById('proceed-button').addEventListener('click', checkTerms);
-  document.getElementById('signup-button').addEventListener('click', signup);
+  document.querySelector('#proceed-button').addEventListener('click', checkTerms);
+  document.querySelector('#signup-button').addEventListener('click', signup);
 });

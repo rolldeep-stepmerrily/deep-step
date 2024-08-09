@@ -16,13 +16,7 @@ const validateUsername = (username) => {
   return true;
 };
 
-const validatePassword = (password, passwordConfirm) => {
-  if (password !== passwordConfirm) {
-    alert('비밀번호가 일치하지 않습니다.');
-
-    return false;
-  }
-
+const validatePassword = (password) => {
   if (!/^(?=.*[A-Za-z])(?=.*\d)(?=.*[`~!@#$%^&*()_=+])[A-Za-z\d`~!@#$%^&*()_=+]{8,16}$/.test(password)) {
     alert('비밀번호는 8~16자의 영문 대소문자, 숫자, 특수문자로 입력해주세요.');
 

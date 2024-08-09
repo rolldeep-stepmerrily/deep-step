@@ -92,8 +92,6 @@ const signup = async () => {
 
     window.location.href = '/';
   } catch (e) {
-    console.error(e);
-
     const message = e.response.data.message;
 
     alert(message);

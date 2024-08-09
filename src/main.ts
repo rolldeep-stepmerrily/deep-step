@@ -24,9 +24,9 @@ async function bootstrap() {
     }),
   );
 
-  app.setGlobalPrefix('api', {
-    exclude: ['/', '/signup'],
-  });
+  const pages = ['/', '/signup', '/chat-room-list'];
+
+  app.setGlobalPrefix('api', { exclude: pages });
 
   app.useStaticAssets(join(__dirname, '..', 'public'));
   app.setBaseViewsDir(join(__dirname, '..', 'views'));

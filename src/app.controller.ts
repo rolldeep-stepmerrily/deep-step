@@ -16,4 +16,10 @@ export class AppController {
   signup() {
     return { appName, styles: ['signup'], scripts: ['signup'] };
   }
+
+  @Get('chat-room-list')
+  @Render('chat-room-list')
+  chatRoomList() {
+    return { appName, styles: ['chat-room-list'], scripts: ['chat-room-list'] };
+  }
 }

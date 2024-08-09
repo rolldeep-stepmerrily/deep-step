@@ -23,19 +23,29 @@ const signin = async () => {
     if (accessToken) {
       sessionStorage.setItem('accessToken', accessToken);
 
-      window.location.href = '/chat-room';
+      window.location.href = '/chat-room-list';
     }
   } catch (e) {
-    console.error(e);
-
     const message = e.response.data.message;
 
     alert(message);
   }
+};
 
-  console.log(response);
+const handleEnter = (e) => {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+
+    document.querySelector('#signin-button').click();
+  }
 };
 
 document.addEventListener('DOMContentLoaded', function () {
-  document.querySelector('#signin-button').addEventListener('click', signin);
+  const usernameInput = document.querySelector('#username');
+  const passwordInput = document.querySelector('#password');
+  const signinButton = document.querySelector('#signin-button');
+
+  usernameInput.addEventListener('keypress', handleEnter);
+  passwordInput.addEventListener('keypress', handleEnter);
+  signinButton.addEventListener('click', signin);
 });

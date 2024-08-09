@@ -38,7 +38,7 @@ export class ChatRepository {
     try {
       return await this.prismaService.chatRoomUser.findUnique({
         where: { userId_chatRoomId: { userId, chatRoomId } },
-        select: { id: true },
+        select: { user: { select: { id: true, profile: { select: { nickname: true, avatar: true } } } } },
       });
     } catch (e) {
       console.error(e);
@@ -49,7 +49,10 @@ export class ChatRepository {
 
   async joinChatRoom(userId: number, chatRoomId: number) {
     try {
-      return await this.prismaService.chatRoomUser.create({ data: { userId, chatRoomId }, select: { id: true } });
+      return await this.prismaService.chatRoomUser.create({
+        data: { userId, chatRoomId },
+        select: { id: true, user: { select: { profile: { select: { nickname: true, avatar: true } } } } },
+      });
     } catch (e) {
       console.error(e);
 
@@ -63,16 +66,11 @@ export class ChatRepository {
 
   async leaveChatRoom(userId: number, chatRoomId: number) {
     try {
-      return await this.prismaService.chatRoomUser.update({
+      return await this.prismaService.chatRoomUser.delete({
         where: { userId_chatRoomId: { userId, chatRoomId } },
-        data: { deletedAt: dayjs().toISOString() },
       });
     } catch (e) {
       console.error(e);
-
-      if (e.code === 'P2025') {
-        throw new ConflictException('not joined this chat room');
-      }
 
       throw new InternalServerErrorException();
     }
@@ -171,7 +169,7 @@ export class ChatRepository {
         });
 
         if (!joinedAt) {
-          throw new ConflictException('not joined this chat room');
+          throw new ConflictException();
         }
 
         return await prisma.message.findMany({

@@ -29,7 +29,7 @@
 
 #message-input {
   flex: 1;
-  margin-right: 10px;
+  margin: 10px 10px 20px 0px;
 }
 
 .sidebar {
@@ -85,4 +85,10 @@
   border-radius: 10px;
   padding: 5px 10px;
   display: inline-block;
+}
+
+.button-group {
+  display: flex;
+  align-items: center;
+  gap: 15px;
 }

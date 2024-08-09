@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 
 import { ChatService } from './chat.service';
@@ -21,7 +21,7 @@ export class ChatController {
     await this.chatService.joinChatRoom(userId, chatRoomId);
   }
 
-  @Post('leave/:id')
+  @Delete('leave/:id')
   async leaveChatRoom(@User('id') userId: number, @Param('id', ParsePositiveIntPipe) chatRoomId: number) {
     await this.chatService.leaveChatRoom(userId, chatRoomId);
   }
@@ -44,5 +44,10 @@ export class ChatController {
   @Get('rooms/:id/messages')
   async findMessages(@User('id') userId: number, @Param('id', ParsePositiveIntPipe) chatRoomId: number) {
     return await this.chatService.findMessages(userId, chatRoomId);
+  }
+
+  @Get('rooms/:id/users')
+  async findChatRoomUser(@User('id') userId: number, @Param('id', ParsePositiveIntPipe) chatRoomId: number) {
+    return await this.chatService.findChatRoomUser(userId, chatRoomId);
   }
 }

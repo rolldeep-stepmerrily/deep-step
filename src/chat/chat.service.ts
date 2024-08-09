@@ -24,10 +24,6 @@ export class ChatService {
   async findUserChatRoom(userId: number, chatRoomId: number) {
     const chatRoom = await this.chatRepository.findUserChatRoom(userId, chatRoomId);
 
-    if (!chatRoom) {
-      throw new NotFoundException();
-    }
-
     return { chatRoom };
   }
 
@@ -79,5 +75,9 @@ export class ChatService {
     }
 
     return await this.chatRepository.findMessages(userId, chatRoomId);
+  }
+
+  async findChatRoomUser(userId: number, chatRoomId: number) {
+    return await this.chatRepository.findChatRoomUser(userId, chatRoomId);
   }
 }

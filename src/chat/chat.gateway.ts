@@ -61,9 +61,10 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
     await client.join(String(chatRoomId));
 
-    this.server
-      .to(String(chatRoomId))
-      .emit('joinRoom', { userId: user.sub, username: user.username, nickname: user.nickname });
+    this.server.to(String(chatRoomId)).emit('userJoined', {
+      id: user.sub,
+      profile: { nickname: user.nickname, avatar: room && room.user.profile?.avatar },
+    });
 
     return room;
   }
@@ -82,7 +83,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
     this.server
       .to(String(chatRoomId))
-      .emit('leaveRoom', { userId: user.sub, username: user.username, nickname: user.nickname });
+      .emit('userLeaved', { id: user.sub, username: user.username, nickname: user.nickname });
 
     return room;
   }

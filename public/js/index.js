@@ -41,6 +41,8 @@ const handleEnter = (e) => {
 };
 
 document.addEventListener('DOMContentLoaded', () => {
+  sessionStorage.removeItem('accessToken');
+
   const usernameInput = document.querySelector('#username');
   const passwordInput = document.querySelector('#password');
   const signinButton = document.querySelector('#signin-button');

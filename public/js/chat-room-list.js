@@ -6,14 +6,18 @@ const findChatRooms = async () => {
 
     const { chatRooms } = response.data;
 
+    console.log(chatRooms);
+
     const chatRoomList = document.querySelector('#chat-room-list');
 
     chatRoomList.innerHTML = '';
 
     const chatRoomListFragment = document.createDocumentFragment();
 
-    chatRooms.forEach(({ id, name, description, chatRoomUsers }) => {
-      const chatRoomElement = createChatRoomElement(id, name, description, chatRoomUsers.length);
+    chatRooms.forEach(({ id, name, description, chatRoomUsers, owner }) => {
+      const ownerNickname = owner.profile.nickname;
+
+      const chatRoomElement = createChatRoomElement(id, name, description, chatRoomUsers.length, ownerNickname);
 
       chatRoomListFragment.appendChild(chatRoomElement);
     });
@@ -24,13 +28,13 @@ const findChatRooms = async () => {
   }
 };
 
-const createChatRoomElement = (id, name, description, userCount) => {
+const createChatRoomElement = (id, name, description, userCount, ownerNickname) => {
   const chatRoomElement = document.createElement('div');
   chatRoomElement.classList.add('chat-room-item');
   chatRoomElement.addEventListener('click', () => joinChatRoom(id));
 
   chatRoomElement.innerHTML = `
-    <div class="chat-room-name">${name}</div>
+    <div class="chat-room-name">${name} <span class="chat-room-owner">(${ownerNickname})</span></div> 
     <div class="chat-room-description">${description || ''}</div>
     <div class="chat-room-user-count">${userCount}명 참여 중</div>
   `;

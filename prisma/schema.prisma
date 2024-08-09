@@ -28,6 +28,7 @@ model User {
   profile       Profile?
   chatRoomUsers ChatRoomUser[]
   messages      Message[]
+  ChatRoom      ChatRoom[]
 }
 
 model Term {
@@ -59,12 +60,14 @@ model ChatRoom {
   id          Int       @id @default(autoincrement())
   name        String
   description String?
+  ownerUserId Int
   createdAt   DateTime  @default(now())
   updatedAt   DateTime? @updatedAt
   deletedAt   DateTime?
 
   messages      Message[]
   chatRoomUsers ChatRoomUser[]
+  owner         User           @relation(fields: [ownerUserId], references: [id])
 }
 
 model ChatRoomUser {

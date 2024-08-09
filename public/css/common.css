@@ -110,8 +110,16 @@ input::placeholder {
     box-sizing: border-box;
   }
 }
+
 .header {
   display: flex;
   align-items: center;
   margin-bottom: 20px;
+}
+
+.description {
+  text-align: center;
+  margin-top: 30px;
+  color: #d50000;
+  font-size: 12px;
 }

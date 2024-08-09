@@ -11,10 +11,6 @@
   color: #333;
 }
 
-.icon-button:hover {
-  color: #007bff;
-}
-
 #chat-room-list {
   margin-top: 20px;
 }
@@ -29,6 +25,11 @@
 
 .chat-room-name {
   font-weight: bold;
+}
+
+.chat-room-owner {
+  font-size: 0.9em;
+  color: #6c757d;
 }
 
 .chat-room-description,

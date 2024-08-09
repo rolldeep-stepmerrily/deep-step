@@ -11,7 +11,7 @@ export class ChatRepository {
   async createChatRoom(userId: number, name: string, description: string | null) {
     try {
       return await this.prismaService.chatRoom.create({
-        data: { name, description, chatRoomUsers: { create: { userId } } },
+        data: { name, description, chatRoomUsers: { create: { userId } }, ownerUserId: userId },
         select: { id: true },
       });
     } catch (e) {
@@ -96,7 +96,13 @@ export class ChatRepository {
     try {
       return await this.prismaService.chatRoom.findMany({
         where: { deletedAt: null },
-        select: { id: true, name: true, description: true, chatRoomUsers: { select: { userId: true } } },
+        select: {
+          id: true,
+          name: true,
+          description: true,
+          chatRoomUsers: { select: { userId: true } },
+          owner: { select: { profile: { select: { nickname: true } } } },
+        },
       });
     } catch (e) {
       console.error(e);
@@ -115,6 +121,7 @@ export class ChatRepository {
           description: true,
           createdAt: true,
           _count: { select: { chatRoomUsers: { where: { deletedAt: null } } } },
+          owner: { select: { profile: { select: { nickname: true } } } },
         },
         orderBy: { updatedAt: 'desc' },
       });
@@ -149,6 +156,7 @@ export class ChatRepository {
             },
           },
           _count: { select: { chatRoomUsers: { where: { deletedAt: null } } } },
+          owner: { select: { profile: { select: { nickname: true } } } },
         },
       });
     } catch (e) {

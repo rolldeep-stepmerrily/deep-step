@@ -1,15 +1,22 @@
 const headers = { Authorization: `Bearer ${sessionStorage.getItem('accessToken')}` };
 
 const createChatRoom = async () => {
+  const name = document.querySelector('#chat-room-name').value.trim();
+
+  if (name.length > 20) {
+    alert('채팅방 이름은 20자 이하로 입력해주세요.');
+    return;
+  }
+
+  const description = document.querySelector('#chat-room-description').value.trim();
+
+  if (description.length > 100) {
+    alert('채팅방 설명은 100자 이하로 입력해주세요.');
+    return;
+  }
+
   try {
-    await axios.post(
-      '/api/chat/room',
-      {
-        name: document.querySelector('#chat-room-name').value,
-        description: document.querySelector('#chat-room-description').value,
-      },
-      { headers },
-    );
+    await axios.post('/api/chat/room', { name, description }, { headers });
 
     window.location.href = '/chat-room-list';
   } catch (e) {

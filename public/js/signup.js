@@ -99,6 +99,15 @@ const signup = async () => {
 };
 
 document.addEventListener('DOMContentLoaded', () => {
+  document.querySelector('#term-back-button').addEventListener('click', () => {
+    window.location.href = '/';
+  });
+
+  document.querySelector('#signup-back-button').addEventListener('click', () => {
+    hideElement('signup-section');
+    showElement('terms-section');
+  });
+
   document.querySelector('#proceed-button').addEventListener('click', checkTerms);
   document.querySelector('#signup-button').addEventListener('click', signup);
 });

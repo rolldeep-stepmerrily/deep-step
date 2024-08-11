@@ -9,12 +9,11 @@
 _<p align="right">designed by DALL·E</p>_
 
 ## Description
- 
+
 NestJS , websocket 기반의 챗웹 😁
 
-
 ## Progress
-  
+
 1. 데이터베이스 생성 ✅
 2. prisma 연결 및 schema 구상 ✅
 3. 로그인 및 인증✅
@@ -26,12 +25,9 @@ NestJS , websocket 기반의 챗웹 😁
 9. EC2 배포 ✅
 10. CI/CD ✅
 
- 
 <p align="center"> 
   <a href="https://deep-step.com" target="_blank" >Home</a> 
-</p> 
-
-
+</p>
 
 ## Technologies
 
@@ -46,8 +42,3 @@ NestJS , websocket 기반의 챗웹 😁
 - [![NGINX](https://img.shields.io/badge/NGINX-%23009639.svg?style=for_the_badge&logo=nginx&logoColor=white)](https://nginx.org/en/docs/)
 - [![PM2](https://img.shields.io/badge/PM2-%232B037A.svg?style=for_the_badge&logo=pm2&logoColor=white)](https://pm2.keymetrics.io/docs/usage/quick-start/)
 - [![Handlebars.js](https://img.shields.io/badge/Handlebars-%23000000.svg?style=for_the_badge&logo=Handlebars.js&logoColor=white)](https://handlebarsjs.com/)
-
-
-## Memo
-새로고침 같은거 하면 실시간 채팅이 안됨..newMessage 이벤트를 못받는것처럼..?
-chat-room.js 확인 ㅠㅠ

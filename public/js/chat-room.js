@@ -110,7 +110,13 @@ const setupSocketListeners = () => {
   });
 
   socket.on('userJoined', (user) => {
-    participantList.appendChild(createParticipantElement(user));
+    const participants = document.querySelectorAll('.participant-item');
+
+    const isAlreadyJoined = Array.from(participants).some((participant) => participant.id === `participant-${user.id}`);
+
+    if (!isAlreadyJoined) {
+      participantList.appendChild(createParticipantElement(user));
+    }
   });
 
   socket.on('userLeaved', (user) => {

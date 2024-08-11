@@ -41,7 +41,7 @@ model Term {
   updatedAt       DateTime? @updatedAt
   deletedAt       DateTime?
 
-  user User @relation(fields: [id], references: [id])
+  user User @relation(fields: [id], references: [id], onDelete: Cascade)
 }
 
 model Profile {
@@ -53,7 +53,7 @@ model Profile {
   updatedAt DateTime? @updatedAt
   deletedAt DateTime?
 
-  user User @relation(fields: [id], references: [id])
+  user User @relation(fields: [id], references: [id], onDelete: Cascade)
 }
 
 model ChatRoom {

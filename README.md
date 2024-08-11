@@ -24,6 +24,8 @@ NestJS , websocket 기반의 챗웹 😁
 8. 읽음 표시 🔲
 9. EC2 배포 ✅
 10. CI/CD ✅
+11. 어드민 채팅방 삭제 기능
+12. 첫화면 익스프레스 베이직 어스 넣어야할지도. 서버비 괜찮나 😂
 
 <p align="center"> 
   <a href="https://deep-step.com" target="_blank" >Home</a> 

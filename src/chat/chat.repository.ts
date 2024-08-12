@@ -66,9 +66,7 @@ export class ChatRepository {
 
   async leaveChatRoom(userId: number, chatRoomId: number) {
     try {
-      return await this.prismaService.chatRoomUser.delete({
-        where: { userId_chatRoomId: { userId, chatRoomId } },
-      });
+      return await this.prismaService.chatRoomUser.delete({ where: { userId_chatRoomId: { userId, chatRoomId } } });
     } catch (e) {
       console.error(e);
 

@@ -46,7 +46,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   }
 
   async handleDisconnect(client: Socket) {
-    console.log(client);
+    console.log('client disconnected');
   }
 
   @SubscribeMessage('joinRoom')

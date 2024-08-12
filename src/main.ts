@@ -3,12 +3,13 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { ValidationPipe } from '@nestjs/common';
 import { join } from 'path';
 import { engine } from 'express-handlebars';
+import helmet from 'helmet';
+import expressBasicAuth from 'express-basic-auth';
 
 import { AppModule } from './app.module';
 import { TransformInterceptor } from './common/interceptors';
-import helmet from 'helmet';
 
-const { NODE_ENV, PORT, AWS_CLOUDFRONT_DOMAIN } = process.env;
+const { NODE_ENV, PORT, AWS_CLOUDFRONT_DOMAIN, GUEST_NAME, GUEST_PASSWORD } = process.env;
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -41,6 +42,8 @@ async function bootstrap() {
     }),
   );
   app.setViewEngine('hbs');
+
+  app.use(['/'], expressBasicAuth({ challenge: true, users: { [GUEST_NAME]: GUEST_PASSWORD } }));
 
   if (NODE_ENV === 'production') {
     app.use(

@@ -22,6 +22,8 @@ import { AppController } from './app.controller';
         AWS_REGION: Joi.string().required(),
         AWS_S3_BUCKET: Joi.string().required(),
         AWS_CLOUDFRONT_DOMAIN: Joi.string().required(),
+        GUEST_NAME: Joi.string().required(),
+        GUEST_PASSWORD: Joi.string().required(),
       }),
     }),
     PrismaModule,

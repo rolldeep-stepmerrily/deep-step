@@ -10,5 +10,7 @@ declare namespace NodeJS {
     AWS_REGION: string;
     AWS_S3_BUCKET: string;
     AWS_CLOUDFRONT_DOMAIN: string;
+    GUEST_NAME: string;
+    GUEST_PASSWORD: string;
   }
 }

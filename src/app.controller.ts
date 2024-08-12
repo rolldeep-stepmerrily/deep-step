@@ -12,8 +12,6 @@ export class AppController {
   @Get()
   @Render('index')
   index() {
-    console.log(process.env.AWS_CLOUDFRONT_DOMAIN);
-    console.log(appLogo);
     return { appLogo, appName, styles: ['index'], scripts: ['index'] };
   }
 

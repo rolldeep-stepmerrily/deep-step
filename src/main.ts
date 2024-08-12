@@ -8,6 +8,7 @@ import expressBasicAuth from 'express-basic-auth';
 
 import { AppModule } from './app.module';
 import { TransformInterceptor } from './common/interceptors';
+import { NextFunction, Request, Response } from 'express';
 
 const { NODE_ENV, PORT, AWS_CLOUDFRONT_DOMAIN, GUEST_NAME, GUEST_PASSWORD } = process.env;
 
@@ -43,7 +44,12 @@ async function bootstrap() {
   );
   app.setViewEngine('hbs');
 
-  app.use(['/'], expressBasicAuth({ challenge: true, users: { [GUEST_NAME]: GUEST_PASSWORD } }));
+  app.use('/', (req: Request, res: Response, next: NextFunction) => {
+    if (req.path === '/' || req.path === '/index.html') {
+      return expressBasicAuth({ challenge: true, users: { [GUEST_NAME]: GUEST_PASSWORD } })(req, res, next);
+    }
+    next();
+  });
 
   if (NODE_ENV === 'production') {
     app.use(

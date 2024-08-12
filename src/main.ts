@@ -5,10 +5,10 @@ import { join } from 'path';
 import { engine } from 'express-handlebars';
 import helmet from 'helmet';
 import expressBasicAuth from 'express-basic-auth';
+import { NextFunction, Request, Response } from 'express';
 
 import { AppModule } from './app.module';
 import { TransformInterceptor } from './common/interceptors';
-import { NextFunction, Request, Response } from 'express';
 
 const { NODE_ENV, PORT, AWS_CLOUDFRONT_DOMAIN, GUEST_NAME, GUEST_PASSWORD } = process.env;
 

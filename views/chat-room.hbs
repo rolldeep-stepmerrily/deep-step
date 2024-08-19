@@ -1,8 +1,18 @@
 <header class='header'>
+  <div id='back-button' class='icon-button' aria-label='뒤로가기'>
+    <i class='fas fa-chevron-left'></i>
+  </div>
   <h2 id='chat-room-name'>{{chatRoomName}}</h2>
+  <button id='hamburger-button'>☰</button>
 </header>
 
-<div id='participant-list'></div>
+<div id='menu'>
+
+  <div id='participant-list'></div>
+  <button id='leave-button'>
+    <i class='fas fa-sign-out-alt'></i>
+  </button>
+</div>
 <div class='chat-room-container'>
 
   <div id='chat-body'>
@@ -10,14 +20,9 @@
   <footer class='chat-footer'>
     <input type='text' id='message-input' placeholder='메시지를 입력하세요.' />
 
-    <div class='button-group'>
-      <button id='leave-button'>
-        <i class='paper-plane-icon'>leave</i>
-      </button>
-      <button id='send-button'>
-        <i class='paper-plane-icon'>send</i>
-      </button>
-    </div>
+    <button id='send-button'>
+      <i class='fas fa-paper-plane'></i>
+    </button>
 
   </footer>
 </div>

@@ -71,6 +71,8 @@ const findMessages = async () => {
     response.data.forEach((message) => {
       chatBody.appendChild(createMessageElement(message));
     });
+
+    chatBody.scrollTop = chatBody.scrollHeight;
   } catch (e) {
     alert('일시적인 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
   }
@@ -107,6 +109,8 @@ const setupSocketListeners = () => {
 
   socket.on('newMessage', (message) => {
     chatBody.appendChild(createMessageElement(message));
+
+    chatBody.scrollTop = chatBody.scrollHeight;
   });
 
   socket.on('userJoined', (user) => {
@@ -145,6 +149,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const messageInput = document.querySelector('#message-input');
   const sendButton = document.querySelector('#send-button');
   const leaveButton = document.querySelector('#leave-button');
+  const hamburgerButton = document.querySelector('#hamburger-button');
+  const chatRoomContainer = document.querySelector('.chat-room-container');
+  const menu = document.querySelector('#menu');
+  const backButton = document.querySelector('#back-button');
 
   initializeChatRoom();
 
@@ -157,4 +165,22 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   leaveButton.addEventListener('click', leaveRoom);
+
+  const overlay = document.createElement('div');
+  overlay.className = 'overlay';
+  chatRoomContainer.appendChild(overlay);
+
+  hamburgerButton.addEventListener('click', () => {
+    menu.classList.toggle('open');
+    overlay.classList.toggle('open');
+  });
+
+  overlay.addEventListener('click', () => {
+    menu.classList.remove('open');
+    overlay.classList.remove('open');
+  });
+
+  backButton.addEventListener('click', () => {
+    window.location.href = '/chat-room-list';
+  });
 });

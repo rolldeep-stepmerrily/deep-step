@@ -1,3 +1,17 @@
+@font-face {
+  font-family: 'Pretendard';
+  src: url('../assets/fonts/Pretendard-Regular.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Pretendard';
+  src: url('../assets/fonts/Pretendard-Bold.otf') format('opentype');
+  font-weight: bold;
+  font-style: normal;
+}
+
 html,
 body {
   height: 100%;
@@ -6,7 +20,7 @@ body {
 }
 
 body {
-  font-family: 'Noto Sans KR', sans-serif;
+  font-family: 'Pretendard', sans-serif;
   line-height: 1.6;
   color: #333;
   background-color: #f3e5f5;

@@ -7,32 +7,7 @@
 </p>
 
 _<p align="right">designed by DALL·E</p>_
-
-## Description
-
-
-<p align="center"> 
-  <a href="https://deep-step.com" target="_blank" >Home</a> 
-  <br/><br/> 
-   Express Basic Auth
-  <br/>
-   ID : guest
-  <br/>
-   Password : qwer1234!
-  <br/>
-</p>
-
-
-NestJS , websocket 기반의 챗웹 😁
-
-회원가입이 번거로우시다면
-  
-guest
-  
-qwer1234! 
-  
-로 로그인 할 수 있습니다.
-
+ 
 ## Progress
 
 1. 데이터베이스 생성 ✅
